@@ -1,6 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
-import { Dots } from "loading-animations-react";
+import { Spinner } from "loading-animations-react";
 
 const App = () => {
   const [users, setUsers] = useState([]);
@@ -9,7 +9,7 @@ const App = () => {
   const getUsers = async () => {
     try {
       const response = await fetch(
-        "https://jsonplaceholder.typicode.com/photos"
+        'https://api.github.com/users'
       );
       setLoading(false);
       setUsers(await response.json());
@@ -22,10 +22,15 @@ const App = () => {
     getUsers();
   }, []);
 
-  const data = users.slice(0, 50);
+  const data = users.slice(0, 1000);
 
   if (loading) {
-    return <Dots className="componentClass" />;
+    return(
+      <div className="flex justify-center items-center h-screen">
+        <Spinner color1="blue" color2="black" textColor="rgba(0,0,0, 0.5)" />
+      </div>
+
+    );
   }
 
   return (
@@ -36,15 +41,15 @@ const App = () => {
           {data.map((curElem) => {
             return (
               <div key={curElem.id}>
-                <div className="flex flex- flex-nowrap flex-row bg-white w-[580px] p-5 rounded-lg">
+                <div className="flex flex- flex-nowrap flex-row bg-white w-[500px] p-5 rounded-lg">
                   <img
                     className="h-[180px]"
-                    src={curElem.url}
+                    src={curElem.avatar_url}
                     alt="GithubImage"
                   />
                   <div className="px-5 w-full flex flex-col justify-evenly">
                     <h2 className="flex flex-column text-xl font-medium">
-                      {curElem.title}
+                      {curElem.login}
                     </h2>
                     <p className="text-md flex justify-center ">
                       MERN developer
